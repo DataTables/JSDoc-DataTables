@@ -1,0 +1,81 @@
+<?js
+    if ( typeof this._class == 'undefined' ) {
+        this._class = 'even';
+    }
+    var access = typeof this.access == 'undefined' ? '' : this.access;
+    /* xxx to do - extended methods */
+
+    print(
+        '<dt id="'+this.longname+'" class="'+access+' '+this._class+'">'+
+            '<a name="'+this.name+'_details"></a>'+
+            '<span class="type-attr">'+this.attribs+'</span>'+ 
+                '<span class="type-name">'+
+                    '<a>'+(this.kind == 'class'? 'new ':'')+this.name+'</a>'+
+                '</span>'+ 
+                '<span class="type-sig">'+this.signature+'</span>'+
+            '</span>'+
+        '</dt>'
+    );
+
+
+    print( '<dd class="'+access+' '+this._class+'">' );
+
+    if (this.summary) {
+        print ( '<p class="summary">'+this.summary+'</p>' );
+    }
+
+    if (this.description) {
+        print( '<p class="description">'+this.description+'</p>' );
+    }
+
+    if (this.kind && this.kind == "class") {
+        print('<h3>Constructor</h3>');
+    }
+
+    print(render('details.tmpl', this));
+    
+    if (this['this']) {
+        print('<h5>This:</h5>');
+        print( '<ul><li>'+linkto(this['this'], this['this'])+'</li></ul>' );
+    }
+
+    if (this.params && this.params.length) {
+        print('<h5>Parameters:</h5>');
+        print( render('params.tmpl', this.params) );
+    }
+
+    if (this.returns && this.returns.length) {        
+        var rdesc = [];
+        this.returns.forEach(function(r) {
+            if (r.description) rdesc.push(r.description);
+        });
+        
+        if (rdesc.length) {
+            print('<h5>Returns:</h5>');
+            print('<p class="returns">'+rdesc.join('</p><p>')+'</p>');
+        }
+    }
+    
+    if (this.fires && this.fires.length) {
+        print( '<h5>Fires:</h5>' );
+        print( '<ul>' );
+        this.fires.forEach(function(f) {
+            print( render('fires.tmpl', f) );
+        } );
+        print( '</ul>' );
+    }
+    
+    if (this.exceptions && this.exceptions.length) {
+        print( '<h5>Throws:</h5>' );
+        print( '<ul>' );
+        this.exceptions.forEach(function(e) {
+            print( render('exceptions.tmpl', e) );
+        } );
+        print( '</ul>' );
+    }
+
+    if (this.examples && this.examples.length) {
+        print('<h5>Example' + (this.examples.length > 1? 's':'') + ':</h5>');
+        print( render('examples.tmpl', this.examples) );
+    }
+?>

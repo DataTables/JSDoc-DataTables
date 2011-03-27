@@ -1,0 +1,48 @@
+<h3 class="subsection-title">Properties</h3>
+<dl>
+    <?js
+        this.forEach(function(n, i) {
+            var access = typeof n.access == 'undefined' ? '' : n.access;
+            var augmented = typeof n._augmented == 'undefined' ? '' : 'augmented';
+
+            print(
+                '<dt class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">'+ 
+                    '<a name="'+n.name+'_details"></a>'+ 
+                    '<span class="type-attr">'+n.attribs+'</span>'+ 
+                    '<span class="type-name">'+
+                        '<a href="#'+n.name+'_details">'+(n.kind == 'class'? 'new ':'')+n.name+'</a>'+
+                    '</span>'+ 
+                    '<span class="type-sig">'+n.signature+'</span>'
+            );
+            if (n.summary) {
+                print( '<p class="summary">'+n.summary+'</p>' );
+            }
+            print( '</dt>' );
+
+            print( '<dd class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">' );
+            if (n.description) {
+                print( '<p class="description">'+n.description+'</p>' );
+            }
+            
+            print(render('details.tmpl', n));
+    
+            if ( n._augmented ) {
+                print( 
+                    '<h5>Extended from:</h5>'+
+                    '<div class="extended">'+
+                        '<a href="'+n._augmented+'.html">'+
+                            '<img src="media/images/extended.png"> '+
+                            n._augmented+
+                        '</a>'+
+                    '</div>'
+                )
+            }
+
+            if (n.examples && n.examples.length) {
+                print('<h5>Example' + (n.examples.length > 1? 's':'') + '</h5>');
+                print( render('examples.tmpl', n.examples) );
+            }
+            print( '</dd>' );
+        } );
+    ?>
+</dl>

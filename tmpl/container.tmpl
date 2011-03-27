@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title><?js= title ?> - documentation</title>
+  
+		<style type="text/css" media="screen">
+			@import "media/css/doc.css";
+			@import "media/css/shCore.css";
+			@import "media/css/shThemeDataTables.css";
+		</style>
+	
+		<script type="text/javascript" src="media/js/shCore.js"></script>
+		<script type="text/javascript" src="media/js/shBrushJScript.js"></script>
+		<script type="text/javascript" src="media/js/jquery.js"></script>
+		<script type="text/javascript" src="media/js/doc.js"></script>
+	</head>
+	<body>
+		<div class="fw_container">
+			<?js
+				docs.forEach(function(doc, i) {
+			?>
+				<a name="top"></a>
+				<div class="fw_header">
+					<h1 class="page-title"><?js= title ?></h1>
+					<?js
+						if (doc.classdesc) {
+							print('<p class="class-description">'+doc.classdesc+'</p>'); 
+						}
+
+						if (doc.variation) {
+							print('<sup>'+doc.variation+'</sup>'); 
+						}
+
+						if (doc.ancestors && doc.ancestors.length) {
+							print('<h2 class="ancestors">Ancestry: ');
+							print('<span class="ancestors">'+doc.ancestors.join(' » ')+'</span>'); 
+							print(' » '+doc.name);
+							print('</h2>');
+						}
+					?>
+					<div class="page-info">
+						<?js
+							var files = find({kind: 'file', 'memberof': {'isUndefined': true}});
+							if ( files && files.length > 0 ) {
+								if ( files[0].summary && files[0].version ) {
+									print( files[0].summary+" v"+files[0].version );
+								}
+								print( " documentation" );
+							}
+						?>
+					</div>
+				</div>
+
+				<?js
+					var classes = find({kind: 'class', memberof: doc.longname});
+					bClasses =  (doc.kind !== 'globalobj' && classes && classes.length) ?
+						true : false;
+					
+					var namespaces = find({kind: 'namespace', memberof: doc.longname});
+					bNamespaces = (doc.kind !== 'globalobj' && namespaces && namespaces.length) ?
+						true : false;
+					 
+					var properties = find({kind: 'property', memberof: doc.longname});
+					if (title === 'Globals') {
+						properties = find({kind: 'property', memberof: {isUndefined: true}});
+					}
+					bProperties = (properties && properties.length && properties.forEach) ?
+						true : false;
+					
+					if ( doc.augments && doc.augments.length ) {
+						var augProperties = [];
+						doc.augments.forEach( function (a) {
+							var inner = find({kind: 'property', memberof: a}).slice();
+							inner.forEach( function (b) {
+								b._augmented = a;
+							} );
+							augProperties = augProperties.concat( inner );
+						} );
+						
+						properties = [].concat(properties, augProperties);
+					}
+
+					
+					var methods = find({kind: 'function', memberof: doc.longname});
+					if (title === 'Globals') {
+						methods = find({kind: 'function', memberof: {isUndefined: true}});
+					}
+					bMethods = (methods && methods.length && methods.forEach) ?
+						true : false;
+					/* xxx to do - extended methods */
+					
+					var events = find({kind: 'event', memberof: doc.longname}); 
+					bEvents = (events && events.length && events.forEach) ?
+						true : false;
+					/* xxx to do - extended methods */
+				?>
+
+				<div class="fw_nav">
+					<h2>Navigation</h2>
+					<ul>
+					<li><a href="#top">Overview</a></li>
+					<?js
+						if ( classes || namespaces || properties || methods || events )
+						{
+							var a = [];
+							print( '<li><a href="#summary">Summary</a><div>' );
+							if (bClasses) {    a.push( '<a href="#summary_classes">Classes</a>' ); }
+							if (bNamespaces) { a.push( '<a href="#summary_namespaces">Namespaces</a>' ); }
+							if (bProperties) { a.push( '<a href="#summary_properties">Properties</a>' ); }
+							if (bMethods) {    a.push( '<a href="#summary_methods">Methods</a>' ); }
+							if (bEvents) {     a.push( '<a href="#summary_events">Events</a>' ); }
+							print( a.join( ' | ') );
+							print( '</div></li>' );
+						}
+
+						if ( properties || methods || events )
+						{
+							var a = [];
+							print( '<li><a href="#details">Details</a><div>' );
+							if (bProperties) { a.push( '<a href="#details_properties">Properties</a>' ); }
+							if (bMethods) {    a.push( '<a href="#details_methods">Methods</a>' ); }
+							if (bEvents) {     a.push( '<a href="#details_events">Events</a>' ); }
+							print( a.join( ' | ') );
+							print( '</div></li>' );
+						}
+
+						print( '</ul>' );
+					?>
+					<div style="margin-top: 10px;">
+						<input type="hidden" name="show_private" value="0">
+						<span id="private_label">Hiding</span> private elements 
+							(<a id="private_toggle" href="">toggle</a>)
+						</span>
+					</div>
+					<div>
+						<input type="hidden" name="show_extended" value="1">
+						<span id="extended_label">Showing</span> extended elements 
+							(<a id="extended_toggle" href="">toggle</a>)
+						</span>
+					</div>
+				</div>
+
+				<div class="fw_content">
+					<a name="overview"></a>
+					<div class="doc_overview">
+						<div class="nav_blocker"></div>
+						<?js
+							if (doc.kind === 'class') {
+								print('<dl>');
+								print(render('method.tmpl', doc));
+								print('</dl>');
+							}
+							else {
+								if (doc.description) {
+									print('<p class="description">' + doc.description + '</p>');
+								}
+								
+								print(render('details.tmpl', doc));
+								
+								if (doc.examples && doc.examples.length) {
+									print('<h3>Example' + (doc.examples.length > 1? 's':'') + '</h3>');
+									print( render('examples.tmpl', doc.examples) );
+								}
+							}
+
+							if (doc.augments && doc.augments.length) {
+								print( render('extends.tmpl', doc.augments) );
+							}
+
+							if (doc.requires && doc.requires.length) {
+								print( render('requires.tmpl', doc.requires) );
+							}
+						?>
+					</div>
+
+					<div class="doc_summary">
+						<a name="summary"></a>
+						<h2>Summary</h2>
+
+						<?js
+							if (bClasses) { 
+								classes.sort( privateSort );
+								print( '<a name="summary_classes"></a>' );
+								print( render('classes.tmpl', classes) );
+							}
+
+							if (bNamespaces) { 
+								namespaces.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="summary_namespaces"></a>');
+								print( render('namespaces.tmpl', namespaces) );
+								print('</div>');
+							}
+
+							if (bProperties) {
+								properties.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="summary_properties"></a>');
+								print(render('properties_summary.tmpl', properties));
+								print('</div>');
+							}
+
+							if (bMethods) { 
+								methods.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="summary_methods"></a>');
+								print(render('method_summary.tmpl', methods));
+								print('</div>');
+							}
+
+							if (bEvents) { 
+								events.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="summary_events"></a>');
+								print(render('events_summary.tmpl', events));
+								print('</div>');
+							}
+						?>
+					</div>
+
+
+					<div class="doc_details">
+						<a name="details"></a>
+						<h2>Details</h2>
+						<?js
+							if (bProperties) {
+								properties.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="details_properties"></a>');
+								print(render('properties.tmpl', properties));
+								print('</div>');
+							}
+
+							if (bMethods) {
+								methods.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="details_methods"></a>');
+								print(render('methods.tmpl', methods));
+								print('</div>');
+							}
+
+							if (bEvents) {
+								events.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="details_events"></a>');
+								print(render('events.tmpl', events));
+								print('</div>');
+							}
+						?>
+   				</div>
+   			</div>
+			<?js 
+				} );
+			?>
+		</div>
+
+		<div class="fw_footer">
+			<?js
+				var files = find({kind: 'file', 'memberof': {'isUndefined': true}});
+				if ( files[0].summary ) {
+					print( files[0].summary+": " );
+				}
+				if ( files[0].copyright ) {
+					print( files[0].copyright+"<br>" );
+				}
+			?>
+
+			Documentation generated by <a href="https://github.com/micmath/JSDoc">JSDoc 3</a> on
+			<?js
+				 var d = new Date();
+				 var th = d.getDate();
+				 if      ( th == 1 ) { th = "st"; }
+				 else if ( th == 2 ) { th = "nd"; }
+				 else if ( th == 3 ) { th = "rd"; }
+				 else                { th = "th"; }
+
+				 var month = d.getMonth();
+				 if      ( month == 0 )  { month = "Jan"; }
+				 else if ( month == 1 )  { month = "Feb"; }
+				 else if ( month == 2 )  { month = "Mar"; }
+				 else if ( month == 3 )  { month = "Apr"; }
+				 else if ( month == 4 )  { month = "May"; }
+				 else if ( month == 5 )  { month = "Jun"; }
+				 else if ( month == 6 )  { month = "Jul"; }
+				 else if ( month == 7 )  { month = "Aug"; }
+				 else if ( month == 8 )  { month = "Sep"; }
+				 else if ( month == 9 )  { month = "Oct"; }
+				 else if ( month == 10 ) { month = "Nov"; }
+				 else                    { month = "Dec"; }
+
+				 var hours = d.getHours()+"";
+				 if ( hours.length == 1 ) { hours = '0'+hours; }
+
+				 var minutes = d.getMinutes()+"";
+				 if ( minutes.length == 1 ) { minutes = '0'+minutes; }
+
+				 print (d.getDate()+th+' '+month+' '+d.getFullYear()+' - '+hours+":"+minutes);
+			?>
+			with the <a href="http://datatables.net/">DataTables</a> template.
+		</div>
+	</body>
+</html>

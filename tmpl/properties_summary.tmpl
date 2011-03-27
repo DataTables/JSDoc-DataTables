@@ -1,0 +1,37 @@
+<h3 class="subsection-title">Properties</h3>
+
+<dl>
+    <?js
+        this.forEach(function(p, i) {
+            var access = typeof p.access == 'undefined' ? '' : p.access;
+            var augmented = typeof p._augmented == 'undefined' ? '' : 'augmented';
+            
+            print(
+                '<dt class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">'+ 
+                    '<span class="type-attr">'+p.attribs+'</span>'+ 
+                    '<span class="type-name">'+
+                        '<a href="#'+p.name+'_details">'+p.name+'</a>'+
+                    '</span>'+ 
+                    '<span class="type-sig">'+p.signature+'</span>'+
+                '</dt>'
+            );
+
+            print( '<dd class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">' );
+            if ( typeof p._augmented != 'undefined' ) {
+                print( 
+                    '<div class="type-augmented" title="Extended from '+p._augmented+'">'+
+                        '<a href="'+p._augmented+'.html#'+p.name+'_details">'+
+                            '<img src="media/images/extended.png">'+
+                        '</a>'+
+                    '</div>'
+                );
+            }
+
+            if (p.description) {
+                print( p.description );
+            }
+
+            print( '</dd>' );
+        } );
+    ?>
+</dl>

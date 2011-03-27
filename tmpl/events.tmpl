@@ -1,0 +1,11 @@
+<h3 class="subsection-title">Events</h3>
+<dl>
+    <?js
+        var i=0;
+        this.forEach(function(n) {
+            n._class = (i%2 == 0) ? 'even' : 'odd';
+            print(render('method.tmpl', n));
+            i++;
+        } );
+    ?>
+</dd>

@@ -1,0 +1,24 @@
+<h3 class="subsection-title">Events</h3>
+<dl>
+    <?js
+        this.forEach(function(p, i) {
+            var access = typeof p.access == 'undefined' ? '' : p.access;
+            
+            print(
+                '<dt class="'+access+' '+(i%2==0?'even':'odd')+'">'+ 
+                    '<span class="type-attr">'+p.attribs+'</span>'+ 
+                    '<span class="type-name">'+
+                        '<a href="#'+p.name+'_details">'+p.name+'</a>'+
+                    '</span>'+ 
+                    '<span class="type-sig">'+p.signature+'</span>'+
+                '</dt>'
+            );
+
+            print( '<dd class="'+access+' '+(i%2==0?'even':'odd')+'">' );
+            if (p.description) {
+                print( p.description );
+            }
+            print( '</dd>' );
+		} );
+    ?>
+</dd>
