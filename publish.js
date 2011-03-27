@@ -176,7 +176,7 @@
             staticFiles = fs.ls(fromDir, 3);
             
         staticFiles.forEach(function(fileName) {
-            var toDir = fs.toDir(fileName.replace(fromDir, outdir+"media/"));
+            var toDir = fs.toDir(fileName.replace(fromDir, outdir+"/media/"));
             fs.mkPath(toDir);
             fs.copyFile(fileName, toDir);
         });
