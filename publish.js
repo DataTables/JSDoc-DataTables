@@ -211,6 +211,11 @@
         data.forEach(function(doclet) {
             if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
             if (doclet.description) doclet.description = renderLinks(doclet.description);
+            if (doclet.params) {
+							doclet.params.forEach( function(param) {
+								param.description = renderLinks(param.description);
+							} );
+						}
             
             doclet.ancestors = generateAncestry(doclet);
         });
