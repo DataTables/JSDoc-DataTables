@@ -14,7 +14,8 @@
      */
     publish = function(data, opts) {
         var out = '',
-            containerTemplate = template.render(fs.read(BASEDIR + 'templates/JSDoc-DataTables/tmpl/container.tmpl'));
+            containerTemplate = template.render(fs.read(BASEDIR + 'templates/JSDoc-DataTables/tmpl/container.tmpl')),
+            indexTemplate = template.render(fs.read(BASEDIR + 'templates/JSDoc-DataTables/tmpl/index.tmpl'));
         
         function render(tmpl, partialData) {
             var renderFunction = arguments.callee.cache[tmpl];
@@ -220,50 +221,6 @@
             doclet.ancestors = generateAncestry(doclet);
         });
         
-        var nav = '',
-            seen = {};
-        
-        var moduleNames = data.get( data.find({kind: 'module'}) );
-        if (moduleNames.length) {
-            nav = nav + '<h3>Modules</h3><ul>';
-            moduleNames.forEach(function(m) {
-                if (!seen[m.longname]) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
-                seen[m.longname] = true;
-            });
-            
-            nav = nav + '</ul>';
-        }
-        var namespaceNames = data.get( data.find({kind: 'namespace'}) );
-        if (namespaceNames.length) {
-            nav = nav + '<h3>Namespaces</h3><ul>';
-            namespaceNames.forEach(function(n) {
-                if (!seen[n.longname]) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
-                seen[n.longname] = true;
-            });
-            
-            nav = nav + '</ul>';
-        }
-        var classNames = data.get( data.find({kind: 'class'}) );
-        if (classNames.length) {
-            nav = nav + '<h3>Classes</h3><ul>';
-            classNames.forEach(function(c) {
-                if (!seen[c.longname]) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
-                seen[c.longname] = true;
-            });
-            
-            nav = nav + '</ul>';
-        }
-        
-        var globalNames = data.get( data.find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}}) );
-        if (globalNames.length) {
-            nav = nav + '<h3>Global</h3><ul>';
-            globalNames.forEach(function(g) {
-                if (!seen[g.longname]) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
-                seen[g.longname] = true;
-            });
-            
-            nav = nav + '</ul>';
-        }
         
         for (var longname in longnameToUrl) {
             var classes = data.get( data.find({kind: 'class', longname: longname}) );
@@ -277,13 +234,20 @@
         }
         
         if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
+        
+        var classes = data.get( data.find({kind: 'class'}) );
+        if (classes.length) generate('Table of Contents', classes, 'index.html', indexTemplate);
 
          
-        function generate(title, docs, filename) {
+        function generate(title, docs, filename, template) {
+            if ( typeof template == 'undefined' ) {
+                template = containerTemplate
+            }
+
             var data = {
                 title: title,
                 docs: docs,
-                nav: nav,
+                nav: '',
                 
                 // helpers
                 render: render,
@@ -293,7 +257,7 @@
             };
             
             var path = outdir + '/' + filename,
-                html = containerTemplate.call(data, data);
+                html = template.call(data, data);
                 
             fs.write(path, html)
         }
@@ -307,28 +271,3 @@ function privateSort ( a, b )
     var y = b.name.replace(/^_/, 'zz').toLowerCase();
     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 }
-	
-
-		function deepTrace( obj, level )
-		{
-			if ( typeof level == 'undefined' ) {
-				level = 0;
-			}
-			if ( level > 1 ) return;
-			
-			var tabs = "";
-			for ( var i=0 ; i < level ; i++ )
-			{
-				tabs += "\t";
-			}
-			
-			for ( var prop in obj )
-			{
-				if ( typeof obj[ prop ] == 'function' ) {
-					;//print( tabs + "[" + prop + "] -> function..." );
-				} else {
-					print( tabs + "[" + prop + "] -> " + obj[ prop ] );
-				}
-				deepTrace( obj[ prop ], level + 1 );
-			}
-		};

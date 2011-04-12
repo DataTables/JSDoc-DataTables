@@ -262,7 +262,9 @@
 					print( files[0].summary+": " );
 				}
 				if ( files[0].copyright ) {
-					print( files[0].copyright+"<br>" );
+					/* Nasty - can't split on new line? */
+					var a = files[0].copyright.split('.');
+					print( a[0]+"<br>" );
 				}
 			?>
 
