@@ -44,10 +44,10 @@
 		<div class="fw_footer">
 			<?js
 				var files = find({kind: 'file', 'memberof': {'isUndefined': true}});
-				if ( files[0].summary ) {
+				if ( files.length && files[0].summary ) {
 					print( files[0].summary+": " );
 				}
-				if ( files[0].copyright ) {
+				if ( files.length && files[0].copyright ) {
 					/* Nasty - can't split on new line? */
 					var a = files[0].copyright.split('.');
 					print( a[0]+"<br>" );

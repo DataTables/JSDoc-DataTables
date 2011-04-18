@@ -214,7 +214,9 @@
             if (doclet.description) doclet.description = renderLinks(doclet.description);
             if (doclet.params) {
 							doclet.params.forEach( function(param) {
-								param.description = renderLinks(param.description);
+                                if (param.description) {
+								    param.description = renderLinks(param.description);
+                                }
 							} );
 						}
             
