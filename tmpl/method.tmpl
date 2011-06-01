@@ -21,11 +21,11 @@
     print( '<dd class="'+access+' '+this._class+'">' );
 
     if (this.summary) {
-        print ( '<p class="summary">'+this.summary+'</p>' );
+        print ( '<p class="summary">'+this.summary.replace( new RegExp( "\n\n", "g" ), '<br><br>')+'</p>' );
     }
 
     if (this.description) {
-        print( '<p class="description">'+this.description+'</p>' );
+        print( '<p class="description">'+this.description.replace( new RegExp( "\n\n", "g" ), '<br><br>')+'</p>' );
     }
 
     if (this.kind && this.kind == "class") {
