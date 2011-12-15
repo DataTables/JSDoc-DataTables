@@ -61,9 +61,9 @@
 					bNamespaces = (doc.kind !== 'globalobj' && namespaces && namespaces.length) ?
 						true : false;
 					 
-					var properties = find({kind: 'property', memberof: doc.longname});
+					var properties = find({kind: 'member', memberof: doc.longname});
 					if (title === 'Globals') {
-						properties = find({kind: 'property', memberof: {isUndefined: true}});
+						properties = find({kind: 'member', memberof: {isUndefined: true}});
 					}
 					bProperties = (properties && properties.length && properties.forEach) ?
 						true : false;
@@ -71,7 +71,7 @@
 					if ( doc.augments && doc.augments.length ) {
 						var augProperties = [];
 						doc.augments.forEach( function (a) {
-							var inner = find({kind: 'property', memberof: a}).slice();
+							var inner = find({kind: 'member', memberof: a}).slice();
 							inner.forEach( function (b) {
 								b._augmented = a;
 							} );
