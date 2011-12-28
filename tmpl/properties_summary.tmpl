@@ -10,7 +10,7 @@
                 '<dt class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">'+ 
                     '<span class="type-attr">'+p.attribs+'</span>'+ 
                     '<span class="type-name">'+
-                        '<a href="#'+p.name+'_details">'+p.name+'</a>'+
+                        '<a href="#'+p.name+'">'+p.name+'</a>'+
                     '</span>'+ 
                     '<span class="type-sig">'+p.signature+'</span>'+
                 '</dt>'
@@ -20,7 +20,7 @@
             if ( typeof p._augmented != 'undefined' ) {
                 print( 
                     '<div class="type-augmented" title="Extended from '+p._augmented+'">'+
-                        '<a href="'+p._augmented+'.html#'+p.name+'_details">'+
+                        '<a href="'+p._augmented+'.html#'+p.name+'">'+
                             '<img src="media/images/extended.png">'+
                         '</a>'+
                     '</div>'

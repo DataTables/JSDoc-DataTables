@@ -7,10 +7,11 @@
 
             print(
                 '<dt class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">'+ 
+                    '<a name="'+n.name+'"></a>'+ 
                     '<a name="'+n.name+'_details"></a>'+ 
                     '<span class="type-attr">'+n.attribs+'</span>'+ 
                     '<span class="type-name">'+
-                        '<a href="#'+n.name+'_details">'+(n.kind == 'class'? 'new ':'')+n.name+'</a>'+
+                        '<a href="#'+n.name+'">'+(n.kind == 'class'? 'new ':'')+n.name+'</a>'+
                     '</span>'+ 
                     '<span class="type-sig">'+n.signature+'</span>'
             );
