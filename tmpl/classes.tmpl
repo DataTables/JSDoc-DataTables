@@ -1,13 +1,20 @@
 <h3 class="subsection-title">Classes</h3>
 <dl>
 	<?js
+		var i=0;
 		this.forEach(function(n) {
-			print( '<dt>'+ linkto(n.longname, n.name) +'</dt>' );
-			print( '<dd>' );
+			print( '<dt class="'+(i%2==0?'even':'odd')+'"><span class="type-name">'+ 
+				linkto(n.longname, n.name) +'</span></dt>' );
+			print( '<dd class="'+(i%2==0?'even':'odd')+'">' );
+			if (n.description) {
+				print(n.description);
+			}
 			if (n.summary) {
 				print(n.summary);
 			}
 			print( '</dd>' );
+
+			i++;
 		} );
 	?>
 </dl>

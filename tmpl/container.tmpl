@@ -184,8 +184,10 @@
 						<?js
 							if (bClasses) { 
 								classes.sort( privateSort );
+								print('<div class="doc_group">');
 								print( '<a name="summary_classes"></a>' );
 								print( render('classes.tmpl', classes) );
+								print('</div>');
 							}
 
 							if (bNamespaces) { 
