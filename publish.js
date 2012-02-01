@@ -378,7 +378,7 @@
 
 function privateSort ( a, b )
 {
-    var x = a.name.replace(/^_/, 'zz').toLowerCase();
-    var y = b.name.replace(/^_/, 'zz').toLowerCase();
+    var x = (a.name === "_") ? "aaa" : a.name.replace(/^_/, 'zz').toLowerCase();
+    var y = (b.name === "_") ? "aaa" : b.name.replace(/^_/, 'zz').toLowerCase();
     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 }
