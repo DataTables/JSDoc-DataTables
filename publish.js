@@ -376,6 +376,29 @@
 })();
 
 
+function augment ( data, doc, type, find )
+{
+    if ( !doc.augments || !doc.augments.length ) {
+        return;
+    }
+
+    doc.augments.forEach( function (a) {
+        var inner = find({kind: type, memberof: a});
+        inner.forEach( function (b) {
+            b._augmented = a;
+            data.push( b );
+        } );
+    } );
+}
+
+function deaugment ( data )
+{
+    data.forEach( function (a) {
+        a._augmented = undefined;
+    } );
+}
+
+
 function privateSort ( a, b )
 {
     var x = (a.name === "_") ? "aaa" : a.name.replace(/^_/, 'zz').toLowerCase();

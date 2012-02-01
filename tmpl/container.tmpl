@@ -58,6 +58,7 @@
 						true : false;
 					
 					var namespaces = find({kind: 'namespace', memberof: doc.longname});
+					augment( namespaces, doc, 'namespace', find );
 					bNamespaces = (doc.kind !== 'globalobj' && namespaces && namespaces.length) ?
 						true : false;
 					 
@@ -65,19 +66,7 @@
 					if (title === 'Globals') {
 						properties = find({kind: 'member', memberof: {isUndefined: true}});
 					}
-
-					if ( doc.augments && doc.augments.length ) {
-						var augProperties = [];
-						doc.augments.forEach( function (a) {
-							var inner = find({kind: 'member', memberof: a}).slice();
-							inner.forEach( function (b) {
-								b._augmented = a;
-							} );
-							augProperties = augProperties.concat( inner );
-						} );
-						
-						properties = [].concat(properties, augProperties);
-					}
+					augment( properties, doc, 'member', find );
 					bProperties = (properties && properties.length && properties.forEach) ?
 						true : false;
 					
@@ -85,14 +74,14 @@
 					if (title === 'Globals') {
 						methods = find({kind: 'function', memberof: {isUndefined: true}});
 					}
+					augment( methods, doc, 'function', find );
 					bMethods = (methods && methods.length && methods.forEach) ?
 						true : false;
-					/* xxx to do - extended methods */
 					
 					var events = find({kind: 'event', memberof: doc.longname}); 
+					augment( events, doc, 'event', find );
 					bEvents = (events && events.length && events.forEach) ?
 						true : false;
-					/* xxx to do - extended methods */
 				?>
 
 				<div class="fw_nav">
@@ -259,10 +248,14 @@
 							}
 						?>
    					</div>
-					<?js
-						}
-					?>
-			<?js 
+				<?js
+					}
+
+					/* Remove the augmented flags so they don't interfear with other pages */
+					if ( bNamespaces ) { deaugment( namespaces ); }
+					if ( bProperties ) { deaugment( properties ); }
+					if ( bMethods )    { deaugment( methods ); }
+					if ( bEvents )     { deaugment( events ); }
 				} );
 			?>
 		</div>
