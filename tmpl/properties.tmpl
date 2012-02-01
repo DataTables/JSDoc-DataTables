@@ -5,6 +5,13 @@
             var access = typeof n.access == 'undefined' ? '' : n.access;
             var augmented = typeof n._augmented == 'undefined' ? '' : 'augmented';
 
+            // If the property is noted as a function, then use the method renderer
+            if ( n.type && n.type.names && n.type.names.length === 1 && n.type.names[0] === "function" ) {
+                n._class = (i%2 == 0) ? 'even' : 'odd';
+                print(render('method.tmpl', n));
+                return;
+            }
+
             print(
                 '<dt class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">'+ 
                     '<a name="'+n.name+'"></a>'+ 
