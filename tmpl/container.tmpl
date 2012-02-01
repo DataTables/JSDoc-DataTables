@@ -65,9 +65,7 @@
 					if (title === 'Globals') {
 						properties = find({kind: 'member', memberof: {isUndefined: true}});
 					}
-					bProperties = (properties && properties.length && properties.forEach) ?
-						true : false;
-					
+
 					if ( doc.augments && doc.augments.length ) {
 						var augProperties = [];
 						doc.augments.forEach( function (a) {
@@ -80,7 +78,8 @@
 						
 						properties = [].concat(properties, augProperties);
 					}
-
+					bProperties = (properties && properties.length && properties.forEach) ?
+						true : false;
 					
 					var methods = find({kind: 'function', memberof: doc.longname});
 					if (title === 'Globals') {
