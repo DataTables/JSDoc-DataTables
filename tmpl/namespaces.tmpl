@@ -7,7 +7,7 @@
 				linkto(n.longname, n.name) +'</span></dt>' );
 			print( '<dd class="'+(i%2==0?'even':'odd')+'">' );
 			if (n.description) {
-				print(n.description);
+				print(n.description.replace( new RegExp( "\n\n", "g" ), '<br><br>'));
 			}
 			print( '</dd>' );
 

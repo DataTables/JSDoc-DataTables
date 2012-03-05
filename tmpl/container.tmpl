@@ -141,7 +141,7 @@
 							}
 							else {
 								if (doc.description) {
-									print('<p class="description">' + doc.description + '</p>');
+									print('<p class="description">' + doc.description.replace( new RegExp( "\n\n", "g" ), '<br><br>') + '</p>');
 								}
 								
 								print(render('details.tmpl', doc));
