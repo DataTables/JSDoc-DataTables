@@ -32,6 +32,7 @@
                 print( '<p class="description">'+n.description+'</p>' );
             }
             
+            print('<div class="collapse_details">');
             print(render('details.tmpl', n));
     
             if ( n._augmented ) {
@@ -50,6 +51,7 @@
                 print('<h5>Example' + (n.examples.length > 1? 's':'') + '</h5>');
                 print( render('examples.tmpl', n.examples) );
             }
+            print('</div>');
             print( '</dd>' );
         } );
     ?>

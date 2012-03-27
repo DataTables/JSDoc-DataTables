@@ -1,45 +1,45 @@
 <dl class="details">
-	<?js if (this.version) {?>
-	<dt>Version:</dt>
-	<dd><?js= version ?></dd>
-	<?js } ?>
-	
-	<?js if (this.since) {?>
-	<dt>Since:</dt>
-	<dd><?js= since ?></dd>
-	<?js } ?>
-	
-	<?js if (this.deprecated) { ?>
-        <dt class="important">Deprecated<?js
-            if (this.deprecated === true) print('</dt><dd class="yes-def">Yes</dd>');
+	<?js 
+		if (this.version) {
+			print( '<dt>Version:</dt>') ;
+			print( '<dd>'+version+'</dd>' );
+		}
+
+		if (this.since) {
+			print( '<dt>Since:</dt>') ;
+			print( '<dd>'+since+'</dd>' );
+		}
+
+		if (this.deprecated) {
+			print( '<dt class="important">Deprecated') ;
+			if (this.deprecated === true) print('</dt><dd class="yes-def">Yes</dd>');
             else print(':</dt><dd>'+this.deprecated+'</dd>');
-        ?>
-        
-        <?js } ?>
+		}
+
+		if (this.author) {
+			print( '<dt>Since:</dt>') ;
+			print( '<dd>'+author+'</dd>' );
+		}
+
+		if (this.copyright) {
+			print( '<dt>Copyright:</dt>') ;
+			print( '<dd>'+copyright+'</dd>' );
+		}
+
+		if (this.license) {
+			print( '<dt>License:</dt>') ;
+			print( '<dd>'+license+'</dd>' );
+		}
 	
-	<?js if (this.author) {?>
-	<dt>Author:</dt>
-	<dd><?js= author ?></dd>
-	<?js } ?>
-	
-	<?js if (this.copyright) {?>
-	<dt>Copyright:</dt>
-	<dd><?js= copyright ?></dd>
-	<?js } ?>
-	
-	<?js if (this.license) {?>
-	<dt>License:</dt>
-	<dd><?js= license ?></dd>
-	<?js } ?>
-	
-	<?js if (this.see && see.length) {?>
-	<dt>See:</dt>
-	<dd>
-        <ul><?js
+		if (this.see && see.length) {
+			print( '<dt>See:</dt>') ;
+			print( '<dd><ul>' );
+
             see.forEach(function(s) {
                 print('<li>'+linkto(s)+'</li>');
             });
-        ?></ul>
-	</dd>
-	<?js } ?>
+
+			print( '</ul></dd>' );
+		}
+	?>
 </dl>

@@ -29,6 +29,7 @@
         print( '<p class="description">'+this.description.replace( new RegExp( "\n\n", "g" ), '<br><br>')+'</p>' );
     }
 
+    print('<div class="collapse_details">');
     if (this.kind && this.kind == "class") {
         print('<h3>Constructor</h3>');
     }
@@ -79,4 +80,6 @@
         print('<h5>Example' + (this.examples.length > 1? 's':'') + ':</h5>');
         print( render('examples.tmpl', this.examples) );
     }
+
+    print('</div>');
 ?>
