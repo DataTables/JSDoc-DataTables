@@ -34,6 +34,11 @@
             
             print('<div class="collapse_details">');
             print(render('details.tmpl', n));
+
+            if (n.properties && n.properties.length) {
+                print('<h5>Properties:</h5>');
+                print( render('params.tmpl', n.properties) );
+            }
     
             if ( n._augmented ) {
                 print( 
