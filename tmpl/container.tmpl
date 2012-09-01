@@ -62,20 +62,36 @@
 					bNamespaces = (doc.kind !== 'globalobj' && namespaces && namespaces.length) ?
 						true : false;
 					 
-					var properties = find({kind: 'member', memberof: doc.longname});
+					var properties = find({kind: 'member', memberof: doc.longname, scope: {"!is":'static'}});
 					if (title === 'Globals') {
 						properties = find({kind: 'member', memberof: {isUndefined: true}});
 					}
 					augment( properties, doc, 'member', find );
 					bProperties = (properties && properties.length && properties.forEach) ?
 						true : false;
+					 
+					var propertiesStatic = find({kind: 'member', memberof: doc.longname, scope: {"is":'static'}});
+					if (title === 'Globals') {
+						propertiesStatic = find({kind: 'member', memberof: {isUndefined: true}});
+					}
+					augment( propertiesStatic, doc, 'member', find );
+					bPropertiesStatic = (propertiesStatic && propertiesStatic.length && propertiesStatic.forEach) ?
+						true : false;
 					
-					var methods = find({kind: 'function', memberof: doc.longname});
+					var methods = find({kind: 'function', memberof: doc.longname, scope: {"!is":'static'}});
 					if (title === 'Globals') {
 						methods = find({kind: 'function', memberof: {isUndefined: true}});
 					}
 					augment( methods, doc, 'function', find );
 					bMethods = (methods && methods.length && methods.forEach) ?
+						true : false;
+					
+					var methodsStatic = find({kind: 'function', memberof: doc.longname, scope: {"is":'static'}});
+					if (title === 'Globals') {
+						methodsStatic = find({kind: 'function', memberof: {isUndefined: true}});
+					}
+					augment( methodsStatic, doc, 'function', find );
+					bMethodsStatic = (methodsStatic && methodsStatic.length && methodsStatic.forEach) ?
 						true : false;
 					
 					var events = find({kind: 'event', memberof: doc.longname}); 
@@ -89,29 +105,102 @@
 					<ul>
 					<li><a href="#top">Overview</a></li>
 					<?js
-						if ( classes || namespaces || properties || methods || events )
-						{
-							var a = [];
-							print( '<li><a href="#summary">Summary</a><div>' );
-							if (bClasses) {    a.push( '<a href="#summary_classes">Classes</a>' ); }
-							if (bNamespaces) { a.push( '<a href="#summary_namespaces">Namespaces</a>' ); }
-							if (bProperties) { a.push( '<a href="#summary_properties">Properties</a>' ); }
-							if (bMethods) {    a.push( '<a href="#summary_methods">Methods</a>' ); }
-							if (bEvents) {     a.push( '<a href="#summary_events">Events</a>' ); }
-							print( a.join( ' | ') );
-							print( '</div></li>' );
-						}
+						print( '<li><a href="#summary">Summary</a><div>' );
+						print( '<table cellpadding="5" border="0" cellspacing="0" width="100%"><tbody>' );
 
-						if ( properties || methods || events )
-						{
-							var a = [];
-							print( '<li><a href="#details">Details</a><div>' );
-							if (bProperties) { a.push( '<a href="#details_properties">Properties</a>' ); }
-							if (bMethods) {    a.push( '<a href="#details_methods">Methods</a>' ); }
-							if (bEvents) {     a.push( '<a href="#details_events">Events</a>' ); }
-							print( a.join( ' | ') );
-							print( '</div></li>' );
+						print( '<tr>' );
+						if (bClasses) { 
+							print( '<td><a href="#summary_classes">Classes ('+classes.length+')</a></td>' );
+						} else {
+							print( '<td>Classes (0)</td>' );
 						}
+						if (bNamespaces) { 
+							print( '<td><a href="#summary_namespaces">Namespaces ('+namespaces.length+')</a></td>' );
+						} else {
+							print( '<td>Namespaces (0)</td>' );
+						}
+						print( '</tr>' );
+
+						print( '<tr>' );
+						if (bProperties) { 
+							print( '<td><a href="#summary_properties">Properties ('+properties.length+')</a></td>' );
+						} else {
+							print( '<td>Properties (0)</td>' );
+						}
+						if (bPropertiesStatic) { 
+							print( '<td><a href="#summary_properties_static">Static properties ('+propertiesStatic.length+')</a></td>' );
+						} else {
+							print( '<td>Static properties (0)</td>' );
+						}
+						print( '</tr>' );
+
+						print( '<tr>' );
+						if (bMethods) { 
+							print( '<td><a href="#summary_methods">Methods ('+properties.length+')</a></td>' );
+						} else {
+							print( '<td>Methods (0)</td>' );
+						}
+						if (bMethodsStatic) { 
+							print( '<td><a href="#summary_methods_static">Static methods ('+propertiesStatic.length+')</a></td>' );
+						} else {
+							print( '<td>Static methods (0)</td>' );
+						}
+						print( '</tr>' );
+
+						print( '<tr>' );
+						if (bEvents) { 
+							print( '<td><a href="#summary_events">Events ('+events.length+')</a></td>' );
+						} else {
+							print( '<td>Events (0)</td>' );
+						}
+						print( '<td></td>' );
+						print( '</tr>' );
+
+						print( '</tbody></table>' );
+						print( '</div></li>' );
+
+
+						/* Details */
+						print( '<li><a href="#details">Details</a><div>' );
+						print( '<table cellpadding="5" border="0" cellspacing="0" width="100%"><tbody>' );
+
+						print( '<tr>' );
+						if (bProperties) { 
+							print( '<td><a href="#summary_properties">Properties ('+properties.length+')</a></td>' );
+						} else {
+							print( '<td>Properties (0)</td>' );
+						}
+						if (bPropertiesStatic) { 
+							print( '<td><a href="#summary_properties_static">Static properties ('+propertiesStatic.length+')</a></td>' );
+						} else {
+							print( '<td>Static properties (0)</td>' );
+						}
+						print( '</tr>' );
+
+						print( '<tr>' );
+						if (bMethods) { 
+							print( '<td><a href="#summary_methods">Methods ('+properties.length+')</a></td>' );
+						} else {
+							print( '<td>Methods (0)</td>' );
+						}
+						if (bMethodsStatic) { 
+							print( '<td><a href="#summary_methods_static">Static methods ('+propertiesStatic.length+')</a></td>' );
+						} else {
+							print( '<td>Static methods (0)</td>' );
+						}
+						print( '</tr>' );
+
+						print( '<tr>' );
+						if (bEvents) { 
+							print( '<td><a href="#summary_events">Events ('+events.length+')</a></td>' );
+						} else {
+							print( '<td>Events (0)</td>' );
+						}
+						print( '<td></td>' );
+						print( '</tr>' );
+
+						print( '</tbody></table>' );
+						print( '</div></li>' );
 
 						print( '</ul>' );
 					?>
@@ -188,17 +277,37 @@
 
 							if (bProperties) {
 								properties.sort( privateSort );
+								properties._title = 'Properties - instance';
 								print('<div class="doc_group">');
 								print('<a name="summary_properties"></a>');
 								print(render('properties_summary.tmpl', properties));
 								print('</div>');
 							}
 
+							if (bPropertiesStatic) {
+								propertiesStatic.sort( privateSort );
+								propertiesStatic._title = 'Properties - static';
+								print('<div class="doc_group">');
+								print('<a name="summary_properties_static"></a>');
+								print(render('properties_summary.tmpl', propertiesStatic));
+								print('</div>');
+							}
+
 							if (bMethods) { 
 								methods.sort( privateSort );
+								methods._title = 'Methods - instance';
 								print('<div class="doc_group">');
 								print('<a name="summary_methods"></a>');
 								print(render('method_summary.tmpl', methods));
+								print('</div>');
+							}
+
+							if (bMethodsStatic) { 
+								methodsStatic.sort( privateSort );
+								methodsStatic._title = 'Methods - static';
+								print('<div class="doc_group">');
+								print('<a name="summary_methods_static"></a>');
+								print(render('method_summary.tmpl', methodsStatic));
 								print('</div>');
 							}
 
@@ -231,11 +340,27 @@
 								print('</div>');
 							}
 
+							if (bPropertiesStatic) {
+								propertiesStatic.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="details_properties"></a>');
+								print(render('properties.tmpl', propertiesStatic));
+								print('</div>');
+							}
+
 							if (bMethods) {
 								methods.sort( privateSort );
 								print('<div class="doc_group">');
 								print('<a name="details_methods"></a>');
 								print(render('methods.tmpl', methods));
+								print('</div>');
+							}
+
+							if (bMethodsStatic) {
+								methodsStatic.sort( privateSort );
+								print('<div class="doc_group">');
+								print('<a name="details_methods"></a>');
+								print(render('methods.tmpl', methodsStatic));
 								print('</div>');
 							}
 

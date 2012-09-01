@@ -251,7 +251,7 @@ div.page-info {
 
 div.fw_nav {
 	position: fixed;
-	top: 60px;
+	top: 25px;
 	right: 30px;
 	width: 250px;
 	border: 1px solid #A4B5D5;
@@ -278,6 +278,18 @@ div.fw_nav ul>li>div {
 
 div.nav_blocker {
 	float: right;
+}
+
+div.fw_nav td {
+	color: #999;
+}
+
+div.fw_nav li {
+	margin-bottom: 5px;
+}
+
+div.fw_nav li>a {
+	font-weight: bold;
 }
 
 
