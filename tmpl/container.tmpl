@@ -86,10 +86,16 @@ function privateSort ( a, b )
 
 				<?js
 					var classes = find({kind: 'class', memberof: doc.longname});
-					bClasses =  (doc.kind !== 'globalobj' && classes && classes.length) ?
+					if (title === 'Globals') {
+						classes = find({kind: 'class', memberof: {isUndefined: true}});
+					}
+					bClasses =  (classes && classes.length) ?
 						true : false;
 					
 					var namespaces = find({kind: 'namespace', memberof: doc.longname});
+					if (title === 'Globals') {
+						namespaces = find({kind: 'namespace', memberof: {isUndefined: true}});
+					}
 					augment( namespaces, doc, 'namespace', find );
 					bNamespaces = (doc.kind !== 'globalobj' && namespaces && namespaces.length) ?
 						true : false;
@@ -262,7 +268,7 @@ function privateSort ( a, b )
 							}
 							else {
 								if (doc.description) {
-									print('<p class="description">' + doc.description.replace( new RegExp( "\n\n", "g" ), '<br><br>') + '</p>');
+									print( doc.description );
 								}
 								
 								print(render('details.tmpl', doc));
@@ -284,7 +290,7 @@ function privateSort ( a, b )
 					</div>
 
 					<?js
-						if ( bClasses || bNamespaces || bProperties || bMethods || bEvents ) {
+						if ( bClasses || bNamespaces || bProperties || bPropertiesStatic || bMethods || bMethodsStatic || bEvents ) {
 					?>
 					<div class="doc_summary">
 						<a name="summary"></a>
@@ -358,7 +364,7 @@ function privateSort ( a, b )
 
 
 					<?js
-						if ( bProperties || bMethods || bEvents ) {
+						if ( bProperties || bPropertiesStatic || bMethods || bMethodsStatic || bEvents ) {
 					?>
 					<div class="doc_details">
 						<a name="details"></a>
