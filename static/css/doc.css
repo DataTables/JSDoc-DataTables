@@ -45,8 +45,14 @@ div.fw_footer {
 
 
 
-.type-param {
-	
+
+.type-attr .type-signature {
+	background-color: #ccc;
+	color: white;
+	border-radius: 3px;
+	display: inline-block;
+	padding: 0 3px;
+	font-size: 0.9em;
 }
 
 .type-attr {
@@ -63,7 +69,7 @@ div.fw_footer {
 }
 
 .type-param {
-	color: #FF9999;
+	color: #D32929;
 }
 
 .type-return {
@@ -207,6 +213,11 @@ div.extended {
 table.params {
 	margin-left: 30px;
 	width: 97%;
+}
+
+table.params th,
+table.params td {
+	padding: 3px;
 }
 
 tr.odd {
