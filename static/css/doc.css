@@ -144,8 +144,8 @@ a:hover {
 }
 
 div.fw_content ul {
-	list-style-image: url('../images/arrow.jpg');
-	padding: 0.5em 0 0.5em 2em;
+	list-style-image: url('../images/arrow.png');
+	padding: 0 0 0 2em;
 }
 
 /*
@@ -272,6 +272,14 @@ code {
 	-webkit-border-radius: 3px;
 	   -moz-border-radius: 3px;
 	        border-radius: 3px;
+}
+
+strong {
+	font-weight: bold;
+}
+
+em {
+	font-style: italic;
 }
 
 
