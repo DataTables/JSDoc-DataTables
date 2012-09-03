@@ -115,10 +115,6 @@ div.doc_overview dd, div.doc_overview dt {
 
 
 
-.doc_details dt, .doc_details dd {
-	padding: 1em 10px;
-}
-
 .right_border div {
 	width: 20px;
 	padding: 2px 0.5em 2px 1em;
@@ -186,6 +182,10 @@ h3 {
 
 h5 {
 	padding-top: 6px;
+	font-weight: bold;
+	font-size: 0.9em;
+	border-bottom: 1px solid #cad4e6;
+	margin-bottom: 1em;
 }
 
 div.doc_summary, div.doc_details {
