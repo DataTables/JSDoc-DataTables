@@ -231,6 +231,18 @@ dd.odd td.number {
 	background-color: #F2F2F2;
 }
 
+p {
+	margin: 1em 0;
+}
+
+p:first-child {
+	margin-top: 0;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+
 p.returns {
 	margin-left: 5%;
 }
@@ -246,6 +258,21 @@ div.page-info {
 	display: none;
 }
 
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	padding: 2px 4px !important;
+	white-space: nowrap;
+	font-size: 0.9em;
+
+	color: #D14;
+	background-color: #F7F7F9;
+
+	border: 1px solid #E1E1E8;
+	-webkit-border-radius: 3px;
+	   -moz-border-radius: 3px;
+	        border-radius: 3px;
+}
 
 
 

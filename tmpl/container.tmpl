@@ -1,4 +1,36 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<?js
+
+function augment ( data, doc, type, find )
+{
+    if ( !doc.augments || !doc.augments.length ) {
+        return;
+    }
+
+    doc.augments.forEach( function (a) {
+        var inner = find({kind: type, memberof: a});
+        inner.forEach( function (b) {
+            b._augmented = a;
+            data.push( b );
+        } );
+    } );
+}
+
+function deaugment ( data )
+{
+    data.forEach( function (a) {
+        a._augmented = undefined;
+    } );
+}
+
+
+function privateSort ( a, b )
+{
+    var x = (a.name === "_") ? "aaa" : a.name.replace(/^_/, 'zz').toLowerCase();
+    var y = (b.name === "_") ? "aaa" : b.name.replace(/^_/, 'zz').toLowerCase();
+    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+}
+
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">

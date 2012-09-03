@@ -22,11 +22,11 @@
     print( '<dd class="'+access+' '+this._class+'">' );
 
     if (this.summary) {
-        print ( '<p class="summary">'+this.summary.replace( new RegExp( "\n\n", "g" ), '<br><br>')+'</p>' );
+        print ( this.summary );
     }
 
     if (this.description) {
-        print( '<p class="description">'+this.description.replace( new RegExp( "\n\n", "g" ), '<br><br>')+'</p>' );
+        print( this.description );
     }
 
     print('<div class="collapse_details">');

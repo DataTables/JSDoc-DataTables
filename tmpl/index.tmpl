@@ -29,10 +29,10 @@
 							print( '<dt>'+ linkto(n.longname, n.name) +'</dt>' );
 							print( '<dd>' );
 							if (n.summary) {
-								print(n.summary.replace( new RegExp( "\n\n", "g" ), '<br><br>'));
+								print(n.summary);
 							}
 							else if (n.description) {
-								print(n.description.replace( new RegExp( "\n\n", "g" ), '<br><br>'));
+								print(n.description);
 							}
 							print( '</dd>' );
 						} );

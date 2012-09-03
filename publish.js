@@ -1,7 +1,6 @@
 (function() {
 
-    var _ = require('underscore/underscore'),
-        template = require('underscore/template'),
+    var template = require('underscore/template'),
         fs = require('fs'),
         helper = require('jsdoc/util/templateHelper'),
         scopeToPunc = { 'static': '.', 'inner': '~', 'instance': '#' };
@@ -14,15 +13,15 @@
         @param {TAFFY} data See <http://taffydb.com/>.
         @param {object} opts
      */
-    publish = function(data, opts) {
+    exports.publish = function(data, opts) {
         var out = '',
-            containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/JSDoc-DataTables/tmpl/container.tmpl')),
-            indexTemplate = template.render(fs.readFileSync(__dirname + '/templates/JSDoc-DataTables/tmpl/index.tmpl'));
+            containerTemplate = template.render(fs.readFileSync(env.dirname + '/templates/JSDoc-DataTables/tmpl/container.tmpl')),
+            indexTemplate = template.render(fs.readFileSync(env.dirname + '/templates/JSDoc-DataTables/tmpl/index.tmpl'));
         
         function render(tmpl, partialData) {
             var renderFunction = arguments.callee.cache[tmpl];
             if (!renderFunction) {
-                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.readFileSync(__dirname + '/templates/JSDoc-DataTables/tmpl/'+tmpl));
+                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.readFileSync(env.dirname + '/templates/JSDoc-DataTables/tmpl/'+tmpl));
             }
             partialData.render = arguments.callee;
             partialData.find = find;
@@ -83,7 +82,7 @@
             }
             
             if (returnTypes && returnTypes.length) {
-                returnTypes = _.map(returnTypes, function(r) {
+                returnTypes = returnTypes.map(function(r) {
                     return linkto(r);
                 });
             }
@@ -180,19 +179,19 @@
             namespaces = find({kind: 'namespace'});
 
         var outdir = opts.destination;
-        if (packageInfo) {
+        if (packageInfo && packageInfo.name) {
             outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
         }
         fs.mkPath(outdir);
 
         // copy static files to outdir
-        var fromDir = __dirname + '/templates/JSDoc-DataTables/static',
+        var fromDir = env.dirname + '/templates/JSDoc-DataTables/static',
             staticFiles = fs.ls(fromDir, 3);
             
         staticFiles.forEach(function(fileName) {
             var toDir = fs.toDir(fileName.replace(fromDir, outdir+"/media/"));
             fs.mkPath(toDir);
-            fs.copyFile(fileName, toDir);
+            fs.copyFileSync(fileName, toDir);
         });
         
         function linkto(longname, linktext) {
@@ -374,34 +373,3 @@
     }
     
 })();
-
-
-function augment ( data, doc, type, find )
-{
-    if ( !doc.augments || !doc.augments.length ) {
-        return;
-    }
-
-    doc.augments.forEach( function (a) {
-        var inner = find({kind: type, memberof: a});
-        inner.forEach( function (b) {
-            b._augmented = a;
-            data.push( b );
-        } );
-    } );
-}
-
-function deaugment ( data )
-{
-    data.forEach( function (a) {
-        a._augmented = undefined;
-    } );
-}
-
-
-function privateSort ( a, b )
-{
-    var x = (a.name === "_") ? "aaa" : a.name.replace(/^_/, 'zz').toLowerCase();
-    var y = (b.name === "_") ? "aaa" : b.name.replace(/^_/, 'zz').toLowerCase();
-    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-}
