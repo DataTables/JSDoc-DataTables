@@ -273,7 +273,7 @@ div.page-info {
 code {
 	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 	padding: 2px 4px !important;
-	white-space: nowrap;
+	white-space: pre;
 	font-size: 0.9em;
 
 	color: #D14;
@@ -285,12 +285,31 @@ code {
 	        border-radius: 3px;
 }
 
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 6px 10px;
+}
+
+pre>code {
+	background-color: transparent;
+	border: none;
+	color: #111;
+}
+
 strong {
 	font-weight: bold;
 }
 
 em {
 	font-style: italic;
+}
+
+ol {
+	list-style-type: decimal;
+	list-style-position: outside;
+	padding-left: 30px;
 }
 
 

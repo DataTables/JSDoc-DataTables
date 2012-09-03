@@ -4,10 +4,10 @@
     <?js
         this.forEach(function(p, i) {
             var access = typeof p.access == 'undefined' ? '' : p.access;
-            /* xxx to do - extended methods */
+            var augmented = typeof p.inherited == 'undefined' ? '' : 'augmented';
             
             print(
-                '<dt class="'+access+' '+(i%2==0?'even':'odd')+'">'+ 
+                '<dt class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">'+ 
                     '<span class="type-attr">'+p.attribs+'</span>'+ 
                     '<span class="type-name">'+
                         '<a href="#'+p.name+'">'+(p.kind == 'class'? 'new ':'')+p.name+'</a>'+
@@ -16,10 +16,22 @@
                 '</dt>'
             );
 
-            print( '<dd class="'+access+' '+(i%2==0?'even':'odd')+'">' );
+            print( '<dd class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">' );
+
             if (p.description) {
                 print( p.description );
             }
+            
+            if ( typeof p.inherited != 'undefined' ) {
+                print( 
+                    '<div class="type-augmented" title="Extended from '+p.inherits.split('#')[0]+'">'+
+                        '<a href="'+p.inherits+'.html#'+p.name+'">'+
+                            '<img src="media/images/extended.png">'+
+                        '</a>'+
+                    '</div>'
+                );
+            }
+            
             print( '</dd>' );
         } );
     ?>

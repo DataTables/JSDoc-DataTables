@@ -3,7 +3,7 @@
     <?js
         this.forEach(function(n, i) {
             var access = typeof n.access == 'undefined' ? '' : n.access;
-            var augmented = typeof n._augmented == 'undefined' ? '' : 'augmented';
+            var augmented = typeof n.inherited == 'undefined' ? '' : 'augmented';
 
             /* If the property is noted as a function, then use the method renderer */
             if ( n.type && n.type.names && n.type.names.length === 1 && n.type.names[0] === "function" ) {
@@ -40,13 +40,13 @@
                 print( render('params.tmpl', n.properties) );
             }
     
-            if ( n._augmented ) {
+            if ( n.inherited ) {
                 print( 
                     '<h5>Extended from:</h5>'+
                     '<div class="extended">'+
-                        '<a href="'+n._augmented+'.html">'+
+                        '<a href="'+n.inherits.split('#')[0]+'.html">'+
                             '<img src="media/images/extended.png"> '+
-                            n._augmented+
+                            n.inherits+
                         '</a>'+
                     '</div>'
                 )

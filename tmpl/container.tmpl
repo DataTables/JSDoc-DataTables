@@ -1,27 +1,5 @@
 <?js
 
-function augment ( data, doc, type, find )
-{
-    if ( !doc.augments || !doc.augments.length ) {
-        return;
-    }
-
-    doc.augments.forEach( function (a) {
-        var inner = find({kind: type, memberof: a});
-        inner.forEach( function (b) {
-            b._augmented = a;
-            data.push( b );
-        } );
-    } );
-}
-
-function deaugment ( data )
-{
-    data.forEach( function (a) {
-        a._augmented = undefined;
-    } );
-}
-
 
 function privateSort ( a, b )
 {
@@ -96,7 +74,6 @@ function privateSort ( a, b )
 					if (title === 'Globals') {
 						namespaces = find({kind: 'namespace', memberof: {isUndefined: true}});
 					}
-					augment( namespaces, doc, 'namespace', find );
 					bNamespaces = (doc.kind !== 'globalobj' && namespaces && namespaces.length) ?
 						true : false;
 					 
@@ -104,7 +81,6 @@ function privateSort ( a, b )
 					if (title === 'Globals') {
 						properties = find({kind: 'member', memberof: {isUndefined: true}});
 					}
-					augment( properties, doc, 'member', find );
 					bProperties = (properties && properties.length && properties.forEach) ?
 						true : false;
 					 
@@ -112,7 +88,6 @@ function privateSort ( a, b )
 					if (title === 'Globals') {
 						propertiesStatic = find({kind: 'member', memberof: {isUndefined: true}});
 					}
-					augment( propertiesStatic, doc, 'member', find );
 					bPropertiesStatic = (propertiesStatic && propertiesStatic.length && propertiesStatic.forEach) ?
 						true : false;
 					
@@ -120,7 +95,6 @@ function privateSort ( a, b )
 					if (title === 'Globals') {
 						methods = find({kind: 'function', memberof: {isUndefined: true}});
 					}
-					augment( methods, doc, 'function', find );
 					bMethods = (methods && methods.length && methods.forEach) ?
 						true : false;
 					
@@ -128,12 +102,10 @@ function privateSort ( a, b )
 					if (title === 'Globals') {
 						methodsStatic = find({kind: 'function', memberof: {isUndefined: true}});
 					}
-					augment( methodsStatic, doc, 'function', find );
 					bMethodsStatic = (methodsStatic && methodsStatic.length && methodsStatic.forEach) ?
 						true : false;
 					
 					var events = find({kind: 'event', memberof: doc.longname}); 
-					augment( events, doc, 'event', find );
 					bEvents = (events && events.length && events.forEach) ?
 						true : false;
 				?>
@@ -413,12 +385,6 @@ function privateSort ( a, b )
    					</div>
 				<?js
 					}
-
-					/* Remove the augmented flags so they don't interfear with other pages */
-					if ( bNamespaces ) { deaugment( namespaces ); }
-					if ( bProperties ) { deaugment( properties ); }
-					if ( bMethods )    { deaugment( methods ); }
-					if ( bEvents )     { deaugment( events ); }
 				} );
 			?>
 		</div>

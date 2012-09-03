@@ -3,10 +3,10 @@
         this._class = 'even';
     }
     var access = typeof this.access == 'undefined' ? '' : this.access;
-    /* xxx to do - extended methods */
+    var augmented = typeof this.inherited == 'undefined' ? '' : 'augmented';
 
     print(
-        '<dt id="'+this.longname+'" class="'+access+' '+this._class+'">'+
+        '<dt id="'+this.longname+'" class="'+access+' '+augmented+' '+this._class+'">'+
             '<a name="'+this.name+'"></a>'+
             '<a name="'+this.name+'_details"></a>'+
             '<span class="type-attr">'+this.attribs+'</span>'+ 
@@ -19,7 +19,7 @@
     );
 
 
-    print( '<dd class="'+access+' '+this._class+'">' );
+    print( '<dd class="'+access+' '+augmented+' '+this._class+'">' );
 
     if (this.summary) {
         print ( this.summary );
@@ -79,6 +79,18 @@
     if (this.examples && this.examples.length) {
         print('<h5>Example' + (this.examples.length > 1? 's':'') + ':</h5>');
         print( render('examples.tmpl', this.examples) );
+    }
+    
+    if ( this.inherited ) {
+        print( 
+            '<h5>Extended from:</h5>'+
+            '<div class="extended">'+
+                '<a href="'+this.inherits.split('#')[0]+'.html">'+
+                    '<img src="media/images/extended.png"> '+
+                    this.inherits+
+                '</a>'+
+            '</div>'
+        )
     }
 
     print('</div>');
