@@ -273,7 +273,7 @@ function privateSort ( a, b )
 								classes.sort( privateSort );
 								print('<div class="doc_group">');
 								print( '<a name="summary_classes"></a>' );
-								print( render('classes.tmpl', classes) );
+								print( render('classes_summary.tmpl', classes) );
 								print('</div>');
 							}
 
@@ -281,7 +281,7 @@ function privateSort ( a, b )
 								namespaces.sort( privateSort );
 								print('<div class="doc_group">');
 								print('<a name="summary_namespaces"></a>');
-								print( render('namespaces.tmpl', namespaces) );
+								print( render('namespaces_summary.tmpl', namespaces) );
 								print('</div>');
 							}
 

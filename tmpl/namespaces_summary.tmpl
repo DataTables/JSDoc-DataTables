@@ -1,0 +1,23 @@
+<h3 class="subsection-title">Namespaces</h3>
+<dl>
+	<?js
+		var i=0;
+		this.forEach(function(n) {
+			print( '<dt class="'+(i%2==0?'even':'odd')+'"><span class="type-name">'+ 
+				linkto(n.longname, n.name) +'</span></dt>' );
+			print( '<dd class="'+(i%2==0?'even':'odd')+'">' );
+			if (n.description) {
+                var lines = n.description.split('</p>');
+                if ( lines.length > 2 ) {
+                    print( lines[0]+ ' ['+linkto(n.longname, '...')+'] </p>' );
+                }
+                else {
+                    print( n.description );
+                }
+			}
+			print( '</dd>' );
+
+			i++;
+		} );
+	?>
+</dl>

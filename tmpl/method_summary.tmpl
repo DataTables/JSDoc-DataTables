@@ -19,7 +19,13 @@
             print( '<dd class="'+access+' '+augmented+' '+(i%2==0?'even':'odd')+'">' );
 
             if (p.description) {
-                print( p.description );
+                var lines = p.description.split('</p>');
+                if ( lines.length > 2 ) {
+                    print( lines[0]+ ' [<a href-"#'+p.name+'">...</a>] </p>' );
+                }
+                else {
+                    print( p.description );
+                }
             }
             
             if ( typeof p.inherited != 'undefined' ) {
@@ -31,7 +37,7 @@
                     '</div>'
                 );
             }
-            
+
             print( '</dd>' );
         } );
     ?>
